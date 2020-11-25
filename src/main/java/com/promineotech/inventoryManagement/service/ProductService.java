@@ -26,7 +26,7 @@ public class ProductService {
 
 	public Product updateProduct(Product product, Long id) throws Exception {
 		try {
-			Product oldProduct = repo.findOne(id);
+			Product oldProduct = repo.findById(id).get();
 			oldProduct.setDescription(product.getDescription());
 			oldProduct.setName(product.getName());
 			oldProduct.setPrice(product.getPrice());
@@ -40,7 +40,7 @@ public class ProductService {
 
 	public void removeProduct(Long id) throws Exception {
 		try {
-			repo.delete(id);
+			repo.deleteById(id);
 		} catch (Exception e) {
 			Logger.error("Exception occurred while trying to delete product" + id, e);
 			throw new Exception("Unable to delete product");

@@ -17,7 +17,7 @@ public class CustomerService {
 
 	public Customer getCustomerById(Long id) throws Exception {
 		try {
-			return repo.findOne(id);
+			return repo.findById(id).get();
 		} catch (Exception e) {
 			Logger.error("Exception occurred while trying to retrieve customer" + id, e);
 			throw e;
@@ -35,7 +35,7 @@ public class CustomerService {
 
 	public Customer updateCustomer(Customer customer, Long id) throws Exception {
 		try {
-			Customer oldCustomer = repo.findOne(id);
+			Customer oldCustomer = repo.findById(id).get();
 			oldCustomer.setAddress(customer.getAddress());
 			oldCustomer.setFirstName(customer.getFirstName());
 			oldCustomer.setLastName(customer.getLastName());
@@ -50,7 +50,7 @@ public class CustomerService {
 
 	public void deleteCustomer(Long id) throws Exception {
 		try {
-			repo.delete(id);
+			repo.deleteById(id);
 		} catch (Exception e) {
 			Logger.error("Exception occurred while trying to update customer :" + id + e);
 			throw new Exception("Unable to delete customer.");

@@ -35,7 +35,7 @@ public class OrderService {
 
 	public Order submitNewOrder(Set<Long> productIds, Long customerId) throws Exception {
 		try {
-			Customer customer = customerRepo.findOne(customerId);
+			Customer customer = customerRepo.findById(customerId).get();
 			Order order = initializeNewOrder(productIds, customer);
 			return repo.save(order);
 		} catch (Exception e) {
@@ -46,7 +46,7 @@ public class OrderService {
 
 	public Order cancelOrder(Long orderId) throws Exception {
 		try {
-			Order order = repo.findOne(orderId);
+			Order order = repo.findById(orderId).get();
 			order.setStatus(OrderStatus.CANCELED);
 			return repo.save(order);
 		} catch (Exception e) {
@@ -57,7 +57,7 @@ public class OrderService {
 
 	public Order completeOrder(Long orderId) throws Exception {
 		try {
-			Order order = repo.findOne(orderId);
+			Order order = repo.findById(orderId).get();
 			order.setStatus(OrderStatus.DELIVERD);
 			return repo.save(order);
 
@@ -69,7 +69,7 @@ public class OrderService {
 
 	private Order initializeNewOrder(Set<Long> productIds, Customer customer) {
 		Order order = new Order();
-		order.setProducts(convertToProductSet(productRepo.findAll(productIds)));
+		order.setProducts(convertToProductSet(productRepo.findAllById(productIds)));
 		order.setOrdered(LocalDate.now());
 		order.setEstimatedDelivery(LocalDate.now().plusDays(DELIVERY_DAYS));
 		order.setCustomer(customer);
